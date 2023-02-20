@@ -14,7 +14,7 @@ const Feed = ({ userLoaded, showSettings, setShowSettings }) => {
             if (response.ok) {
                 const data = await response.json()
                 setFeed(data)
-                // console.log(data)
+                console.log(data)
             }
             else {
                 console.log('feed not loaded')
@@ -33,6 +33,7 @@ const Feed = ({ userLoaded, showSettings, setShowSettings }) => {
                 </>
             }
             {!userLoaded && <p>Loading...</p>}
+            {showSettings && <div className='greyScreenActive'></div>}
         </div>
     );
 }
