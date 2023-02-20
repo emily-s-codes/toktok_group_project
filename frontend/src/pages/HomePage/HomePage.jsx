@@ -5,6 +5,8 @@ import MiniLogo from '../../img/LogoMini.png';
 import { useEffect } from 'react';
 import NavbarBottom from '../../components/NavbarBottom/NavbarBottom.jsx';
 import Feed from '../../components/Feed/Feed';
+import warteUhr from '../../img/Frame.png'
+
 
 const HomePage = ({ setUserData, userLoaded, setUserLoaded, showSettings, setShowSettings }) => {
     const nav = useNavigate()
@@ -49,7 +51,10 @@ const HomePage = ({ setUserData, userLoaded, setUserLoaded, showSettings, setSho
                     </div>
                     <NavbarBottom />
                 </>}
-            {!userLoaded && <p>Loading ...</p>}
+            {!userLoaded && <div className="notLoadedDiv"><p className='loadingP'>Loading ...</p>
+                <img className='warteUhr' src={warteUhr} alt='Warteuhr' />
+            </div>
+            }
         </div>
     );
 };
