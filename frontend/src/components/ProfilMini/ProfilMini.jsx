@@ -26,6 +26,7 @@ const ProfilMini = ({ showSettings, setShowSettings, singlePost, post }) => {
             }
         }
         getUserData()
+        // eslint-disable-next-line
     }, [])
 
     return (

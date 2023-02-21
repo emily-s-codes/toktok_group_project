@@ -17,7 +17,7 @@ export const getPostComments = async (req, res) => {
 }
 
 export const getSingleComment = async (req, res) => {
-    console.log('params for single comment', req.params)
+    // console.log('params for single comment', req.params)
     try {
         const db = await getDb()
         const result = await db.collection(COL).findOne({ _id: req.params.id })
@@ -67,7 +67,7 @@ export const likeSingleComment = async (req, res) => {
     const commentid = req.body.commentId
     try {
         if (req.body.result === true) {
-            console.log('true')
+            // console.log('true')
             try {
                 const db = await getDb()
                 const commentLiked = await db.collection(COL).updateOne({ _id: new ObjectId(commentid) }, { $addToSet: { likedBy: req.body.likedBy } })
@@ -78,7 +78,7 @@ export const likeSingleComment = async (req, res) => {
             }
         }
         if (req.body.result === false) {
-            console.log('false')
+            // console.log('false')
             try {
                 const db = await getDb()
                 const commentLiked = await db.collection(COL).updateOne({ _id: new ObjectId(commentid) }, { $pull: { likedBy: req.body.likedBy } })

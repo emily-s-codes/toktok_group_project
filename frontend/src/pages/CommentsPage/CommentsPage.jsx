@@ -49,6 +49,7 @@ const CommentsPage = ({ setUserData, setUserLoaded, userLoaded }) => {
             }
         }
         getComments()
+        // eslint-disable-next-line
     }, [])
     useEffect(() => {
         const getUser = async () => {

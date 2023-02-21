@@ -11,20 +11,20 @@ const cookieConfig = {
 }
 
 export const login = (req, res) => {
-    console.log("userController.js console log", req.body)
+    // console.log("userController.js console log", req.body)
     getDb()
         //1. Abfragen, ob ein entsprechender User existiert
         .then((db) => db.collection(COL).findOne({ email: req.body.user }))
         .then(user => {
             if (user === null) {
                 //falls nein:
-                console.log('user not found')
+                // console.log('user not found')
                 res.status(401).end()
             }
             //wenn ja, das Passwort dazu prüfen:
             else {
-                console.log('user', user)
-                console.log('req', req.body.password)
+                // console.log('user', user)
+                // console.log('req', req.body.password)
                 if (user.password === req.body.password) {
                     const token = createToken(user._id)
                     res.cookie('token', token, cookieConfig)
@@ -32,7 +32,7 @@ export const login = (req, res) => {
                 }
                 else {
                     //wenn das Passwort falsch ist:
-                    console.log('password ist falsch')
+                    // console.log('password ist falsch')
                     res.status(401).end()
                 }
             }
@@ -59,7 +59,7 @@ export const register = async (req, res) => {
     try {
         const db = await getDb()
         const result = await db.collection(COL).insertOne(completeUser)
-        console.log("register Funktion result = ", result)
+        // console.log("register Funktion result = ", result)
         res.status(200).end()
     }
     catch (error) {
@@ -69,7 +69,7 @@ export const register = async (req, res) => {
 }
 
 export const getAllUsers = async (req, res) => {
-    console.log('get all users')
+    // console.log('get all users')
     const db = await getDb()
     try {
         const allUsers = await db.collection(COL).find().toArray()
@@ -126,7 +126,7 @@ export const updateUser = async (req, res) => {
     }
     try {
         const verify = verifyToken(token)
-        console.log('verify', verify)
+        // console.log('verify', verify)
         const dbUser = await db.collection(COL).updateOne({ _id: new ObjectId(verify.userid) },
             {
                 $set: {
@@ -141,11 +141,11 @@ export const updateUser = async (req, res) => {
                     aboutMe: req.body.aboutme
                 }
             })
-        console.log('dbuser', dbUser)
+        // console.log('dbuser', dbUser)
         if (req.body.image) {
             try {
                 const imageUpdate = await db.collection(COL).updateOne({ _id: new ObjectId(verify.userid) }, { $set: { image: { url: req.body.image, public_id: req.body.public_id } } })
-                console.log('imageUpdate', imageUpdate)
+                // console.log('imageUpdate', imageUpdate)
             }
             catch (error) {
                 res.status(400).end(error.message)
@@ -176,7 +176,7 @@ export const logoutUser = async (_, res) => {
 }
 
 export const followUser = async (req, res) => {
-    console.log('follow user')
+    // console.log('follow user')
     const token = req.cookies.token
     const db = await getDb()
     try {
@@ -185,9 +185,9 @@ export const followUser = async (req, res) => {
                 const verify = verifyToken(token)
                 const followerUser = await db.collection(COL).updateOne({ _id: new ObjectId(verify.userid) },
                     { $addToSet: { following: req.body.following } })
-                console.log('follower user', followerUser)
+                // console.log('follower user', followerUser)
                 const followingUser = await db.collection(COL).updateOne({ _id: new ObjectId(req.body.following) }, { $addToSet: { followedBy: req.body._id } })
-                console.log('following user', followingUser)
+                // console.log('following user', followingUser)
                 res.status(200).json({ followerUser, followingUser })
             } catch (error) {
                 console.log(error.message)
@@ -199,9 +199,9 @@ export const followUser = async (req, res) => {
                 const verify = verifyToken(token)
                 const unfollowerUser = await db.collection(COL).updateOne({ _id: new ObjectId(verify.userid) },
                     { $pull: { following: req.body.following } })
-                console.log('unfollowerUser', unfollowerUser)
+                // console.log('unfollowerUser', unfollowerUser)
                 const unfollowingUser = await db.collection(COL).updateOne({ _id: new ObjectId(req.body.following) }, { $pull: { followedBy: req.body._id } })
-                console.log('unfollowing user', unfollowingUser)
+                // console.log('unfollowing user', unfollowingUser)
                 res.status(200).json({ unfollowerUser, unfollowingUser })
             } catch (error) {
                 console.log(error.message)

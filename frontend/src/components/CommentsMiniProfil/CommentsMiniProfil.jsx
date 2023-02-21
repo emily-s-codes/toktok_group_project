@@ -25,6 +25,7 @@ const CommentsMiniProfil = ({ comment }) => {
             }
         }
         getProfile()
+        // eslint-disable-next-line
     }, [])
 
     return (
